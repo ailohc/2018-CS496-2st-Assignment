@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cs496.second">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/firebase_icon"
+        android:label="2nd Project"
+        android:name=".core.flux.App"
+        android:roundIcon="@drawable/firebase_icon"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".core.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".home.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.Third_Sub_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".session.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".session.CreateAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".session.EmailVerificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.ThirdActivity"
+            android:screenOrientation="portrait" />
+
+        <provider
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:name="android.support.v4.content.FileProvider">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "6115006393",
+    "firebase_url": "https://second-assignment.firebaseio.com",
+    "project_id": "second-assignment",
+    "storage_bucket": "second-assignment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6115006393:android:8f6a92f57b956a0e",
+        "android_client_info": {
+          "package_name": "cs496.second"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6115006393-qlg4eb3t22i287mh0j6g9tq0q12j24ft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnn-CYYztCKdXzvjNbnQudy_hIrwvQa30"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

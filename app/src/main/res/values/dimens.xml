@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="margin_big">36dp</dimen>
+    <dimen name="margin_small">16dp</dimen>
+    <dimen name="lists_title_bottom_margin">12dp</dimen>
+
+    <dimen name="logo_image_size">100dp</dimen>
+    <dimen name="lv_header_text_size">10sp</dimen>
+    <dimen name="input_field_height">48dp</dimen>
+
+    <dimen name="edit_text_padding">14dp</dimen>
+    <dimen name="login_buttons_text_size">16sp</dimen>
+
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+
+    <dimen name="image_size_profile_settings_screen">64dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+
+
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+
+    <dimen name="margin_2">2dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+
+    <dimen name="small_profile_dimen">50dp</dimen>
+    <dimen name="big_profile_dimen">120dp</dimen>
+</resources>

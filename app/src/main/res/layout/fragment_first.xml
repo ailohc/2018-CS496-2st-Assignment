@@ -38,7 +38,7 @@
         </ListView>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/button_folder"
+            android:id="@+id/fileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
@@ -53,11 +53,11 @@
             android:id="@+id/view_dummy"
             android:layout_width="1dp"
             android:layout_height="80dp"
-            app:layout_anchor="@id/button_folder"
+            app:layout_anchor="@id/fileBtn"
             app:layout_anchorGravity="top|right|end" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/button_facebook"
+            android:id="@+id/fbBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"

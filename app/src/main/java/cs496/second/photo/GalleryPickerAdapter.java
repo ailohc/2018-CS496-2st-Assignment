@@ -77,7 +77,7 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
             public void onClick(View v) {
                 //if true view image as gridview
                 if (PhotosData.dir) {
-                    Log.d("MyTag","if");
+                    Log.d("TestTag","thas would show all images");
                     Intent intent = new Intent(context,ImagesGridActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("POS",position);

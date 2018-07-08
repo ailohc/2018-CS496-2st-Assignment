@@ -30,7 +30,7 @@ public class ImagesGridActivity extends AppCompatActivity implements LoaderManag
         position = intent.getIntExtra("POS",0);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        gridLayoutManager = new GridLayoutManager(getApplicationContext(),2);
+        gridLayoutManager = new GridLayoutManager(getApplicationContext(),2); // number of images in a row
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
         int spacing = 0; // 50px

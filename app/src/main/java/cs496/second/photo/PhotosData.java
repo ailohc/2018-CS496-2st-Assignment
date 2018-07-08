@@ -1,6 +1,7 @@
 package cs496.second.photo;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,10 @@ import java.util.List;
 public class PhotosData {
     public static boolean dir;
 
+
     public static List<PhotosModel> getData(boolean home, Cursor cursor) {
+        Log.d("TestTag","photosData, getData start / "+ String.valueOf(home) );
+
         dir = home;
         List<PhotosModel> photos = new ArrayList<>();
         List<String> bucketIds = new ArrayList<>();
@@ -37,6 +41,7 @@ public class PhotosData {
                 }
             }
         }
+        Log.d("TestTag","photosData, getData finished" );
         return photos;
     }
 }

@@ -60,9 +60,40 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cs496.second.R;
+
 public class FirstFragment extends Fragment {
 
+    private HashMap<String, Contact> contact_list;
+    private ArrayList<String> name_list;
     private FloatingActionButton fileBtn, fbBtn;
+    private EditText contact_search;
+    private ListView contact_listview;
+    private ContactAdapter contact_adapter;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_first, container, false);
+        fileBtn = rootView.findViewById(R.id.fileBtn);
+        fbBtn = rootView.findViewById(R.id.fbBtn);
+        contact_search = rootView.findViewById(R.id.contact_search);
+        contact_listview = rootView.findViewById(R.id.contact_listview);
+
+        fileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashMap<String, Contact> localContact = GetContact();
+                new SendToServer(localContact).execute();
+            }
+        });
+
+        contact_search.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        contact_search.setImeActionLabel("", EditorInfo.IME_ACTION_DONE);
+
+
+        return rootView;
+    }
 
 
 }

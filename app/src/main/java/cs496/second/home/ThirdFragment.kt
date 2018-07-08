@@ -19,8 +19,8 @@ class ThirdFragment : Fragment() {
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.fragment_third, container, false)
-        val ClassifyStartbutton = rootView.findViewById<Button>(R.id.button1)
-        ClassifyStartbutton.setOnClickListener {
+        val ChatStartbutton = rootView.findViewById<Button>(R.id.button1)
+        ChatStartbutton.setOnClickListener {
             var intent = Intent(context, Third_Sub_Activity::class.java)
             startActivity(intent)
         }

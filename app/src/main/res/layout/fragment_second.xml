@@ -6,10 +6,13 @@
     tools:context="cs496.second.home.SecondFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/secondFragmentRecycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Second tab"
-        android:textSize="40sp"/>
+        android:layout_gravity="center"
+        android:background="#84fafac3"
+
+        />
 
 </FrameLayout>

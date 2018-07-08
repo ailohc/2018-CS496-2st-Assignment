@@ -6,11 +6,16 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cs496.second.R;
 
@@ -18,7 +23,7 @@ public class ImagesGridActivity extends AppCompatActivity implements LoaderManag
     RecyclerView mRecyclerView;
     private GridLayoutManager gridLayoutManager;
     private static final int URL_LOADER = 0;
-    GalleryPickerAdapter adapter;
+    GalleryPickerAdapter galleryPickerAdapter;
     static int position;
 
     @Override
@@ -39,9 +44,9 @@ public class ImagesGridActivity extends AppCompatActivity implements LoaderManag
 
         getLoaderManager().initLoader(URL_LOADER, null, this);
 
-        if (adapter == null) {
-            adapter = new GalleryPickerAdapter(getApplicationContext());
-            mRecyclerView.setAdapter(adapter);
+        if (galleryPickerAdapter == null) {
+            galleryPickerAdapter = new GalleryPickerAdapter(getApplicationContext());
+            mRecyclerView.setAdapter(galleryPickerAdapter);
         }
     }
 
@@ -97,8 +102,11 @@ public class ImagesGridActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        adapter.setData(PhotosData.getData(false, cursor));
-        adapter.notifyDataSetChanged();
+        // Asynch here
+        GetDataTaskImageGrid getDataTaskImageGrid = new GetDataTaskImageGrid(false, cursor);
+        getDataTaskImageGrid.execute();
+        //galleryPickerAdapter.setData(PhotosData.getData(false, cursor));
+        //galleryPickerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -109,7 +117,43 @@ public class ImagesGridActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        adapter.notifyDataSetChanged();
+        galleryPickerAdapter.notifyDataSetChanged();
     }
+
+    private class GetDataTaskImageGrid extends AsyncTask<Object, Integer, List<PhotosModel>> {
+        private Boolean home;
+        private Cursor cursor;
+
+        public GetDataTaskImageGrid(Boolean home, Cursor cursor){
+            Log.d("TestTag", "AsyncTaskImageGrid constructor");
+            this.home = home;
+            this.cursor = cursor;
+        }
+
+        @Override
+        protected List<PhotosModel> doInBackground(Object[] objects){
+            Log.d("TestTag", "AsyncTaskImageGrid boInBackground start");
+            List<PhotosModel> photos = new ArrayList<>();
+            photos = PhotosData.getData(home,cursor);
+
+            return photos;
+        }
+
+        @Override
+        protected void onPostExecute(List<PhotosModel> photosModelList){
+            // Actually
+            Log.d("TestTag", "AsyncTaskImageGrid onPostExecute start");
+            //List<PhotosModel> photos = photosModelList;
+
+//            galleryPickerAdapter.setData(photos);
+            galleryPickerAdapter.setData(photosModelList);
+            galleryPickerAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+
+
+
 
 }

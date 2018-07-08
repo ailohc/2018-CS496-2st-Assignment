@@ -30,7 +30,7 @@ class Contact_Detail_Activity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         tv_name.text = intent.getStringExtra("name")
-        tv_phone.text = intent.getStringExtra("phone")
+        tv_phone.text = intent.getStringExtra("phone_number")
         tv_email.text = intent.getStringExtra("email")
         tv_facebook.text = intent.getStringExtra("facebook")
 

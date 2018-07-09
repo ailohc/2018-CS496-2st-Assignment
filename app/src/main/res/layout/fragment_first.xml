@@ -57,7 +57,7 @@
             android:layout_height="80dp"
             app:layout_anchor="@id/fileBtn"
             app:layout_anchorGravity="top|right|end" />
-
+<!--
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fbBtn"
             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
             app:backgroundTint="@color/colorPrimary"
             app:layout_anchor="@+id/view_dummy"
             app:layout_anchorGravity="top|right|end" />
-
+-->
     </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

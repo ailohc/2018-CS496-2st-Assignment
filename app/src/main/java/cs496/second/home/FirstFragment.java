@@ -63,6 +63,7 @@ import cs496.second.R;
 
 public class FirstFragment extends Fragment {
 
+    private HashMap<String, Contact> localContact;
     private HashMap<String, Contact> hashed_contact_list;
     private ArrayList<Contact> contact_list;
     private ArrayList<String> name_list;
@@ -90,15 +91,16 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         fileBtn = rootView.findViewById(R.id.fileBtn);
-        fbBtn = rootView.findViewById(R.id.fbBtn);
+        //fbBtn = rootView.findViewById(R.id.fbBtn);
         contact_search = rootView.findViewById(R.id.contact_search);
         contact_listview = rootView.findViewById(R.id.contact_listview);
 
         fileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashMap<String, Contact> localContact = GetContact();
+                localContact = GetContact();
                 //new SendToServer(localContact).execute(); for server connection
+                //below is changed just for local data fetch testing
                 name_list = new ArrayList<>(localContact.keySet());
                 contact_adapter = new ContactAdapter(getActivity(), R.layout.contact_item, name_list);
                 contact_listview.setAdapter(contact_adapter);
@@ -154,9 +156,11 @@ public class FirstFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), Contact_Detail_Activity.class);
                 String name = adapterView.getAdapter().getItem(i).toString();
                 intent.putExtra("name", name);
-                intent.putExtra("phone_number", hashed_contact_list.get(name).phone);
-                intent.putExtra("email", hashed_contact_list.get(name).email);
-                intent.putExtra("facebook", hashed_contact_list.get(name).facebook);
+                intent.putExtra("phone", localContact.get(name).phone);
+                intent.putExtra("email", localContact.get(name).email);
+                //below is changed just for local data fetch testing
+                //intent.putExtra("phone_number", hashed_contact_list.get(name).phone);
+                //intent.putExtra("email", hashed_contact_list.get(name).email);
                 startActivity(intent);
             }
         });
@@ -350,7 +354,6 @@ public class FirstFragment extends Fragment {
                 params.add(new BasicNameValuePair("name"        , PostContact.name));
                 params.add(new BasicNameValuePair("phone"       , PostContact.phone));
                 params.add(new BasicNameValuePair("email"       , PostContact.email));
-                params.add(new BasicNameValuePair("facebook"    , PostContact.facebook));
                 params.add(new BasicNameValuePair("profileImage", PostContact.profileImage));
                 UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params, HTTP.UTF_8);
                 httpPost.setEntity(ent);
@@ -407,7 +410,6 @@ public class FirstFragment extends Fragment {
                 if(UpdateContact.name.equals(""))         params.add(new BasicNameValuePair("name"        , UpdateContact.name));
                 if(UpdateContact.phone.equals(""))        params.add(new BasicNameValuePair("phone"       , UpdateContact.phone));
                 if(UpdateContact.email.equals(""))        params.add(new BasicNameValuePair("email"       , UpdateContact.email));
-                if(UpdateContact.facebook.equals(""))     params.add(new BasicNameValuePair("facebook"    , UpdateContact.facebook));
                 if(UpdateContact.profileImage.equals("")) params.add(new BasicNameValuePair("profileImage", UpdateContact.profileImage));
                 UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params, HTTP.UTF_8);
                 httpPut.setEntity(ent);
@@ -517,10 +519,9 @@ public class FirstFragment extends Fragment {
                     String obj_name         = arr.getJSONObject(i).getString("name");
                     String obj_phone        = arr.getJSONObject(i).getString("phone");
                     String obj_email        = arr.getJSONObject(i).getString("email");
-                    String obj_facebook     = arr.getJSONObject(i).getString("facebook");
                     String obj_profileImage = arr.getJSONObject(i).getString("profileImage");
                     obj_name = obj_name.replace('+', ' ');
-                    hashed_contact_list.put(obj_name, new Contact(obj_name, obj_phone, obj_email, obj_facebook, obj_profileImage));
+                    hashed_contact_list.put(obj_name, new Contact(obj_name, obj_phone, obj_email, obj_profileImage));
                 }
                 return true;
             } catch (IOException e) {

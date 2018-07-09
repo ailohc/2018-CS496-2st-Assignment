@@ -15,10 +15,9 @@ import org.jetbrains.anko.toast
 
 class Contact_Detail_Activity : AppCompatActivity() {
 
-    lateinit private var nameText: TextView
-    lateinit private var phoneText: TextView
-    lateinit private var emailText: TextView
-    lateinit private var facebookText: TextView
+    private var nameText: String? = null
+    private var phoneText: String? = null
+    private var emailText: String? = null
     private var phoneNumber: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +28,12 @@ class Contact_Detail_Activity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        tv_name.text = intent.getStringExtra("name")
-        tv_phone.text = intent.getStringExtra("phone_number")
-        tv_email.text = intent.getStringExtra("email")
-        tv_facebook.text = intent.getStringExtra("facebook")
-
+        nameText = intent.getStringExtra("name")
+        phoneText = intent.getStringExtra("phone")
+        emailText = intent.getStringExtra("email")
+        tv_name.text = nameText
+        tv_phone.text = phoneText
+        tv_email.text = emailText
         phoneNumber = tv_phone.text.toString()
 
         tv_name.onClick {

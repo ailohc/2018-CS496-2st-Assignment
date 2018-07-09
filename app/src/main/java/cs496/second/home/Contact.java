@@ -2,21 +2,19 @@ package cs496.second.home;
 
 public class Contact {
 
-    public String name, phone, email, facebook, profileImage;
+    public String name, phone, email, profileImage;
 
     public Contact(String name) {
         this.name = name;
         this.phone = "";
         this.email = "";
-        this.facebook = "";
         this.profileImage = "";
     }
 
-    public Contact(String name, String phone, String email, String facebook, String profileImage) {
+    public Contact(String name, String phone, String email, String profileImage) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.facebook = facebook;
         this.profileImage = profileImage;
     }
 
@@ -35,10 +33,6 @@ public class Contact {
         return this;
     }
 
-    public Contact setFacebook(String facebook) {
-        this.facebook = facebook;
-        return this;
-    }
 
     public Contact setProfileImage(String profileImage) {
         this.profileImage = profileImage;

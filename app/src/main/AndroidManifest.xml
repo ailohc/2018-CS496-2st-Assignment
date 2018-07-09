@@ -28,6 +28,8 @@
         <activity
             android:name=".home.HomeActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".home.Contact_Detail_Activity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".home.Third_Sub_Activity"
             android:screenOrientation="portrait" />
@@ -43,7 +45,6 @@
         <activity
             android:name=".home.ThirdActivity"
             android:screenOrientation="portrait" />
-
         <provider
             android:authorities="${applicationId}.provider"
             android:exported="false"

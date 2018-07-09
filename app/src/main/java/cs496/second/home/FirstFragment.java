@@ -98,7 +98,10 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 HashMap<String, Contact> localContact = GetContact();
-                new SendToServer(localContact).execute();
+                //new SendToServer(localContact).execute(); for server connection
+                name_list = new ArrayList<>(localContact.keySet());
+                contact_adapter = new ContactAdapter(getActivity(), R.layout.contact_item, name_list);
+                contact_listview.setAdapter(contact_adapter);
             }
         });
 

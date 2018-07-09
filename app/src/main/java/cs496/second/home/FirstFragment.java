@@ -1,5 +1,4 @@
 package cs496.second.home;
-import android.support.v4.app.Fragment;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -41,6 +40,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -99,11 +99,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 localContact = GetContact();
-                //new SendToServer(localContact).execute(); for server connection
-                //below is changed just for local data fetch testing
-                name_list = new ArrayList<>(localContact.keySet());
-                contact_adapter = new ContactAdapter(getActivity(), R.layout.contact_item, name_list);
-                contact_listview.setAdapter(contact_adapter);
+                new SendToServer(localContact).execute(); //for server connection
             }
         });
 
@@ -156,11 +152,8 @@ public class FirstFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), Contact_Detail_Activity.class);
                 String name = adapterView.getAdapter().getItem(i).toString();
                 intent.putExtra("name", name);
-                intent.putExtra("phone", localContact.get(name).phone);
-                intent.putExtra("email", localContact.get(name).email);
-                //below is changed just for local data fetch testing
-                //intent.putExtra("phone_number", hashed_contact_list.get(name).phone);
-                //intent.putExtra("email", hashed_contact_list.get(name).email);
+                intent.putExtra("phone_number", hashed_contact_list.get(name).phone);
+                intent.putExtra("email", hashed_contact_list.get(name).email);
                 startActivity(intent);
             }
         });
@@ -246,7 +239,7 @@ public class FirstFragment extends Fragment {
             String jsonResponse = "";
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.66.244:8080/api/contacts/";
+                String urlString = "http://52.231.71.211:8080/api/connected/";
                 URI url = new URI(urlString);
                 HttpGet httpGet = new HttpGet(url);
                 HttpResponse response = httpClient.execute(httpGet);
@@ -290,7 +283,7 @@ public class FirstFragment extends Fragment {
             String jsonResponse = "";
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.66.244:8080/api/contacts/name" + useName;
+                String urlString = "http://52.231.71.211:8080/api/contacts/" + useName;
                 URI url = new URI(urlString);
                 HttpGet httpGet = new HttpGet(url);
                 HttpResponse response = httpClient.execute(httpGet);
@@ -347,7 +340,7 @@ public class FirstFragment extends Fragment {
             String jsonResponse = "";
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.66.244:8080/api/contacts/";
+                String urlString = "http://52.231.71.211:8080/api/contacts/";
                 URI url = new URI(urlString);
                 HttpPost httpPost = new HttpPost(url);
                 List<NameValuePair> params = new ArrayList<>();
@@ -403,7 +396,7 @@ public class FirstFragment extends Fragment {
             String jsonResponse = "";
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.66.244:8080/api/contacts/" + key;
+                String urlString = "http://52.231.71.211:8080/api/contacts/" + key;
                 URI url = new URI(urlString);
                 HttpPut httpPut = new HttpPut(url);
                 List<NameValuePair> params = new ArrayList<>();
@@ -470,7 +463,7 @@ public class FirstFragment extends Fragment {
             String jsonResponse = "";
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.66.244:8080/api/contacts/" + id;
+                String urlString = "http://52.231.71.211:8080/api/contacts/" + id;
                 URI url = new URI(urlString);
                 HttpDelete httpDelete = new HttpDelete(url);
                 HttpResponse response = httpClient.execute(httpDelete);
@@ -508,12 +501,14 @@ public class FirstFragment extends Fragment {
             String jsonResponse = "";
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.66.244:8080/api/contacts/";
+                String urlString = "http://52.231.71.211:8080/api/contacts/";
                 URI url = new URI(urlString);
                 HttpGet httpGet = new HttpGet(url);
                 HttpResponse response = httpClient.execute(httpGet);
                 jsonResponse = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
                 JSONArray arr = new JSONArray(jsonResponse);
+                int datalength = arr.length();
+                Log.d("**********************", String.valueOf(datalength));
                 for(int i = 0; i < arr.length(); i++) {
                     String obj_id           = arr.getJSONObject(i).getString("_id");
                     String obj_name         = arr.getJSONObject(i).getString("name");

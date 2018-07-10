@@ -93,7 +93,7 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
 
         //if true display bucket name or image name
         if (PhotosData.dir) {
-            holder.tv_grid.setText(model.getImageName() == null ? model.getImageBucket() : model.getImageName());
+            holder.tv_grid.setText(model.getImageName() != null ? model.getImageBucket() : model.getImageName());
         } else {
             holder.tv_grid.setVisibility(View.GONE);
         }

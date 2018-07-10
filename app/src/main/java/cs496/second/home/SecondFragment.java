@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -61,6 +64,11 @@ public class SecondFragment extends Fragment {
     public Button server_button;
     public ImageView server_image;
 
+    private Animation fab_open, fab_close;
+    private FloatingActionButton fab1_instagram;
+    private FloatingActionButton fab2_instagram;
+    private FloatingActionButton fab3_instagram;
+    private Boolean isFabOpen = false;
 
     AlbumView albumView = new AlbumView();
 
@@ -93,6 +101,15 @@ public class SecondFragment extends Fragment {
 
         server_image = (ImageView) rootview.findViewById(R.id.server_image);
 
+        fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_close);
+
+        fab1_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab1_instagram);
+        fab2_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab2_instagram);
+        fab3_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab3_instagram);
+
+        fab1_instagram.setOnClickListener(mClickListener);
+
 
 
         gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),2);  // 이거는 gallery를 보여주는 것과는 상관없음
@@ -108,6 +125,43 @@ public class SecondFragment extends Fragment {
         Log.d("TestTag","onCreateView before return");
 
         return rootview;
+    }
+
+    FloatingActionButton.OnClickListener mClickListener = new View.OnClickListener() {
+        public void onClick(View view){
+            int id = view.getId();
+            switch (id){
+                case R.id.fab1_instagram:
+                    anim();
+                    Toast.makeText(getActivity(), "Floating Action Button", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.fab2_instagram:
+                    anim();
+                    Toast.makeText(getActivity(), "Button1", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.fab3_instagram:
+                    anim();
+                    Toast.makeText(getActivity(), "Button2", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+
+    public void anim() {
+        if (isFabOpen) {
+            fab2_instagram.startAnimation(fab_close);
+            fab3_instagram.startAnimation(fab_close);
+            fab2_instagram.setClickable(false);
+            fab3_instagram.setClickable(false);
+            isFabOpen = false;
+        } else {
+            fab2_instagram.startAnimation(fab_open);
+            fab3_instagram.startAnimation(fab_open);
+            fab2_instagram.setClickable(true);
+            fab3_instagram.setClickable(true);
+            isFabOpen = true;
+        }
     }
 
 

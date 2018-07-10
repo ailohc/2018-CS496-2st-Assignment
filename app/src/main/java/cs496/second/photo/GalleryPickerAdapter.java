@@ -1,11 +1,16 @@
 package cs496.second.photo;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
@@ -34,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs496.second.R;
+import cs496.second.home.HomeActivity;
 
 public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdapter.MyViewHolder> {
 
@@ -51,7 +57,6 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
     int flag = 0;
 
     static List<PhotosModel> data = new ArrayList<>();
-
 
     public GalleryPickerAdapter(Context context) {
         this.context = context;
@@ -75,8 +80,6 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
-
         final PhotosModel model = data.get(position);
         Log.d("TestTag", "gallerypick adapter position : "+ position);
 //        Log.d("TestTag","gallery pick adapter name "+model.getImageName());
@@ -87,69 +90,6 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
 
         //ImagePostTask imagePostTask = new ImagePostTask(thumb, urlStr, model);
         //imagePostTask.execute();
-
-        /*
-        if(flag==0){
-            String urlStr = "http://52.231.70.3:3000/post/image";
-            ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
-            thumb.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOS);
-
-
-
-            String encodedString = Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
-            String jsonResponose = "";
-
-            try {
-
-                // HttpURLConnection 객체 생성.
-                HttpURLConnection httpURLConnection = null;
-                URL url = new URL(urlStr);
-                // URL 연결 (웹페이지 URL 연결.)
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                // 요청 방식 선택 (GET, POST)
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.setDoOutput(true);
-
-                httpURLConnection.setRequestProperty("Name", "testname");
-                httpURLConnection.setRequestProperty("Image", "testimage");
-                httpURLConnection.setRequestProperty("ApiId","testAppid");
-                httpURLConnection.setRequestProperty("photo","testphoto");
-
-                OutputStream os = httpURLConnection.getOutputStream();
-                os.write(encodedString.getBytes("euc-kr"));
-
-                os.flush();
-
-                os.close();
-
-                int responseCode = httpURLConnection.getResponseCode();
-
-                Log.d("TestTag","responsecode is : "+ responseCode);
-
-                httpURLConnection.disconnect();
-
-                /*
-                URL url = new URL(urlStr);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                if(urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    readStream(in);
-                    urlConnection.disconnect();
-                }else{
-                    Toast.makeText(getApplicationContext(), "에러발생", Toast.LENGTH_SHORT).show();
-                }
-                */
-        /*
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            flag++;
-            Log.d("TestTag","gallerypicadapter, flag should be used only once");
-        }
-        */
 
         holder.iv_grid.setImageBitmap(thumb);
 
@@ -194,6 +134,43 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
                     context.startActivity(intent);
                     Log.d("MyTag","else7    ");
                 }
+            }
+        });
+
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //Toast.makeText(context, "Long Click", Toast.LENGTH_SHORT).show();
+                Log.d("TestTag","LongClick");
+
+                Snackbar.make(v, "Wanna Share?~", Snackbar.LENGTH_SHORT).setAction("Yeap", new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view){
+                        Toast.makeText(context, "Uploading... "+model.getImageName(), Toast.LENGTH_SHORT).show();
+
+                        Handler mHandler = new Handler();
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "Shared!... "+position, Toast.LENGTH_SHORT).show();
+                            }
+                        }, 1500);
+
+
+                        Runnable mToast = new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "Shared!...", Toast.LENGTH_SHORT).show();
+                            }
+                        };
+
+                    }
+
+                }).show();
+
+
+                return true;
             }
         });
 

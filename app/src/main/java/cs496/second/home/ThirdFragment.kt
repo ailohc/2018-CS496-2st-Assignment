@@ -24,6 +24,11 @@ class ThirdFragment : Fragment() {
             var intent = Intent(context, Third_Sub_Activity::class.java)
             startActivity(intent)
         }
+        val ChatbotStartbutton = rootView.findViewById<Button>(R.id.button2)
+        ChatbotStartbutton.setOnClickListener {
+            var intent2 = Intent(context, FourthActivity::class.java)
+            startActivity(intent2)
+        }
         return rootView
     }
 

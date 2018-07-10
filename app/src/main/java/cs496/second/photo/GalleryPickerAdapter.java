@@ -35,7 +35,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cs496.second.R;
@@ -54,7 +56,6 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
     private Context context;
     private LayoutInflater inflater;
     public static String sortOrder = MediaStore.Images.Media.DATA + " DESC";
-    int flag = 0;
 
     static List<PhotosModel> data = new ArrayList<>();
 
@@ -86,10 +87,7 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
 
         Bitmap thumb = BitmapDecoder.decodeBitmapFromFile(model.getImagePath(), 180, 180);
 
-        String urlStr = "http://52.231.70.3:3000/post/image";
-
-        //ImagePostTask imagePostTask = new ImagePostTask(thumb, urlStr, model);
-        //imagePostTask.execute();
+ //       String urlStr = "http://52.231.70.3:3000/post/image";
 
         holder.iv_grid.setImageBitmap(thumb);
 
@@ -144,36 +142,35 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
                 Log.d("TestTag","LongClick");
 
                 Snackbar.make(v, "Wanna Share?~", Snackbar.LENGTH_SHORT).setAction("Yeap", new View.OnClickListener(){
-
                     @Override
                     public void onClick(View view){
                         Toast.makeText(context, "Uploading... "+model.getImageName(), Toast.LENGTH_SHORT).show();
+
+                        ImagePostTask imagePostTask = new ImagePostTask(thumb);
+                        imagePostTask.execute();
 
                         Handler mHandler = new Handler();
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(context, "Shared!... "+position, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Shared!... ", Toast.LENGTH_SHORT).show();
+                                Log.d("TestTag","time is : "+testToday());
                             }
                         }, 1500);
-
-
-                        Runnable mToast = new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(context, "Shared!...", Toast.LENGTH_SHORT).show();
-                            }
-                        };
-
                     }
-
                 }).show();
-
 
                 return true;
             }
         });
 
+    }
+
+    public String testToday(){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            Calendar c1 = Calendar.getInstance();
+            String strToday = sdf.format(c1.getTime());
+            return strToday;
     }
 
     @Override
@@ -196,121 +193,67 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
         }
     }
 
-
     public class ImagePostTask extends AsyncTask<Void, Void, String>{
         private Bitmap bitmap;
-        private String urlString;
-        private PhotosModel photosModel;
 
-        public ImagePostTask(Bitmap bitmap, String urlString, PhotosModel photosModel){
+        public ImagePostTask(Bitmap bitmap){
             this.bitmap = bitmap;
-            this.urlString = urlString;
-            this.photosModel = photosModel;
-
         }
 
         @Override
         protected String doInBackground(Void... params){
             String jsonResponse = "";
+            String urlStr = "http://52.231.70.3:3000/ins/post";
+
             ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 10 , byteArrayOS);
 
             String encodedString = Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
-
-            /*try{
-                FileWriter fileWriter = new FileWriter("testimageoutput.txt");
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                bufferedWriter.write(encodedString);
-                bufferedWriter.close();
-                Log.d("TestTag", "file save excepttion!");
-            } catch (IOException e){
-                Log.d("TestTag", "file save excepttion!");
-            }*/
-
             //Log.d("TestTag",encodedString);
             //Log.d("TestTag2",photosModel.getImageName());
-
-            String jsonResponose = "";
-
             JSONObject json = new JSONObject();
-
             InputStream inputStream = null;
 
-            if(flag==0){
-                Log.d("TestTag","gallerypicadapter, flag should be used only once");
-                flag++;
-                try {
-
-                    // HttpURLConnection 객체 생성.
-                    HttpURLConnection httpURLConnection = null;
-                    URL url = new URL(urlString);
-                    // URL 연결 (웹페이지 URL 연결.)
-                    httpURLConnection = (HttpURLConnection) url.openConnection();
-                    // 요청 방식 선택 (GET, POST)
-                    httpURLConnection.setReadTimeout(10000);
-                    httpURLConnection.setConnectTimeout(15000);
-                    httpURLConnection.setRequestMethod("POST");
-                    httpURLConnection.setDoInput(true);
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-
-                    //httpURLConnection.setRequestProperty("Name", "testname");
-                    //httpURLConnection.setRequestProperty("Image", "testimage");
-                    //httpURLConnection.setRequestProperty("ApiId","testAppid");
-                    //httpURLConnection.setRequestProperty("photo","testphoto");
-
-                    //json.accumulate("id",photosModel.getImageName());
-                    json.accumulate("id","1234");
-                    json.accumulate("image",encodedString);
-
-                    OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
-                    writer.write(json.toString());
-                    writer.flush();
-                    writer.close();
-                    //Log.d("TestTag2",json.toString());
-//                    Log.d("TestTag2",photosModel.getImageName());
-                    /*
-                    OutputStream os = httpURLConnection.getOutputStream();
-                    os.write(encodedString.getBytes("euc-kr"));
-                    os.flush();
-                    os.close();*/
-
-                    int responseCode = httpURLConnection.getResponseCode();
-
-                    Log.d("TestTag","responsecode is : "+ responseCode);
-
-                    httpURLConnection.disconnect();
-
-                    return Integer.toString(responseCode);
-
-                /*
+            Log.d("TestTag","gallerypicadapter, flag should be used only once");
+            try {
                 URL url = new URL(urlStr);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                if(urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    readStream(in);
-                    urlConnection.disconnect();
-                }else{
-                    Toast.makeText(getApplicationContext(), "에러발생", Toast.LENGTH_SHORT).show();
-                }
-                */
+                // HttpURLConnection 객체 생성.
+                HttpURLConnection httpURLConnection = null;
+                // URL 연결 (웹페이지 URL 연결.)
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                // 요청 방식 선택 (GET, POST)
+                httpURLConnection.setReadTimeout(10000);
+                httpURLConnection.setConnectTimeout(15000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e){
-                    Log.d("TestTag","gallerypicadapter ALL ! exception ");
-                    e.printStackTrace();
-                } finally {
-                    //if(inputStream != null)
-                        //inputStream.close();
-                }
 
-                // Log.d("TestTag","gallerypicadapter, flag should be used only once");
+                json.accumulate("time",testToday());
+                json.accumulate("image",encodedString);
 
+                OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
+                writer.write(json.toString());
+                writer.flush();
+                writer.close();
+
+                int responseCode = httpURLConnection.getResponseCode();
+
+                Log.d("TestTag","responsecode is : "+ responseCode);
+
+                httpURLConnection.disconnect();
+
+                return Integer.toString(responseCode);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                Log.d("TestTag","gallerypicadapter ALL ! exception ");
+                e.printStackTrace();
             }
-
 
 
             return "-1";

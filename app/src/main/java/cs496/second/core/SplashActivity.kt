@@ -26,6 +26,7 @@ class SplashActivity : FluxActivity() {
         super.onCreate(savedInstanceState)
         val permissions = arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET)
         ActivityCompat.requestPermissions(this, permissions, MULTIPLE_PERMISSIONS)
+        Thread.sleep(5000)
         if (checkPlayServices()) {
             dispatcher.dispatch(TryToLoginInFirstInstanceAction())
             sessionStore.flowable()

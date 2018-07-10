@@ -1,9 +1,11 @@
 package cs496.second.home
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.app.ActivityCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -14,6 +16,7 @@ class HomeActivity : AppCompatActivity() {
 
     private var mSectionsPagerAdapter: PageAdapter?=null
     private var mViewPager: ViewPager? = null
+
 
     companion object {
         fun newIntent(context: Context): Intent =

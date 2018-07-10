@@ -44,6 +44,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".photo.ImagesGridActivity"/>
         <activity android:name=".photo.ImageViewActivity"/>
+        <activity android:name=".home.Second_sub_Activity"/>
 
 
         <provider

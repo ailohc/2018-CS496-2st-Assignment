@@ -3,6 +3,7 @@ package cs496.second.home;
 import android.Manifest;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -54,15 +55,14 @@ public class SecondFragment extends Fragment {
     public SecondFragment(){
         Log.d("TestTag","start SecondFragment");
     }
-
+    private Intent intent;
     RecyclerView mRecyclerView;
     private GridLayoutManager gridLayoutManager;
     private static final int URL_LOADER = 0;
     public GalleryPickerAdapter galleryPickerAdapter;
     String permissions= new String (Manifest.permission.READ_EXTERNAL_STORAGE);
     private int PERMISSION_REQUEST_CODE = 200;
-    public Button server_button;
-    public ImageView server_image;
+
 
     private Animation fab_open, fab_close;
     private FloatingActionButton fab1_instagram;
@@ -88,19 +88,6 @@ public class SecondFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_second,null);
         mRecyclerView = (RecyclerView) rootview.findViewById(R.id.secondFragmentRecycler_view);
 
-        server_button = (Button) rootview.findViewById(R.id.server_button);
-
-        server_button.setOnClickListener( new Button.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Log.d("TestTag","button click ");
-                ImageGetTask imageGetTask = new ImageGetTask("key");
-                imageGetTask.execute();
-            }
-        });
-
-        server_image = (ImageView) rootview.findViewById(R.id.server_image);
-
         fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_close);
 
@@ -109,6 +96,13 @@ public class SecondFragment extends Fragment {
         fab3_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab3_instagram);
 
         fab1_instagram.setOnClickListener(mClickListener);
+        fab2_instagram.setOnClickListener(new FloatingActionButton.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                intent = new Intent(getActivity(), Second_sub_Activity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -314,7 +308,6 @@ public class SecondFragment extends Fragment {
                     byte[] imageBytes = baos.toByteArray();
                     imageBytes = Base64.decode(imagebase64, Base64.DEFAULT);
                     Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    server_image.setImageBitmap(decodedImage);
 
 
                     //readStream(in);

@@ -16,21 +16,6 @@
 
         />
 
-    <Button
-        android:id="@+id/server_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="get"
-        android:layout_gravity="center"
-        />
-
-    <ImageView
-        android:id="@+id/server_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_gravity="bottom"
-        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab3_instagram"

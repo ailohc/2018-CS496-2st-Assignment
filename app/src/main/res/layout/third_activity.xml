@@ -28,10 +28,10 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:background="@android:drawable/ic_menu_gallery"
+            android:background="@drawable/plus"
             android:id="@+id/photoPickerButton"
-            android:layout_height="36dp"
-            android:layout_width="36dp" />
+            android:layout_height="24dp"
+            android:layout_width="24dp" />
 
         <EditText
             android:id="@+id/messageEditText"

@@ -74,17 +74,6 @@ public class FirstFragment extends Fragment {
 
     //for posting
     private static int POST_SUCCESS = 1;
-    //for update
-    private final int UPDATE_SUCCESS = 1;
-    private final int DATABASE_FAILURE = 2;
-    private final int CONTACT_NOT_FOUND = 3;
-    private final int FAILED_TO_UPDATE = 4;
-    //for delete
-    private final int SUCCESS = 1;
-    private final int EXCEPTION_OCCURED = 3;
-
-
-    private static int COUNTER, MAX;
 
     @Nullable
     @Override
@@ -168,7 +157,7 @@ public class FirstFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int j) {
                         String name = adapterView.getAdapter().getItem(i).toString();
-                        new PostTask(localContact.get(name));
+                        new PostTask(localContact.get(name)).execute();
                     };
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -233,10 +222,9 @@ public class FirstFragment extends Fragment {
         }
         @Override
         protected Object doInBackground(Object[] objects) {
-            Log.d("**************","responsed");
             String jsonResponse = "";
+            Log.d("***************", "aaaaaaaaaaaaaaaa");
             try {
-                Log.d("**************","responsed");
                 HttpClient httpClient = new DefaultHttpClient();
                 String urlString = "http://52.231.71.211:8080/api/contacts/";
                 URI url = new URI(urlString);

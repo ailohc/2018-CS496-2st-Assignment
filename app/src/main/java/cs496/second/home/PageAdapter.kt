@@ -9,11 +9,11 @@ class PageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                FirstFragment()
+                ThirdFragment()
             }
             1 -> SecondFragment()
             else -> {
-                return ThirdFragment()
+                return FirstFragment()
             }
         }
     }
@@ -24,10 +24,10 @@ class PageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            0 -> "Contacts"
+            0 -> "Chat"
             1 -> "Gallery"
             else -> {
-                return "Chat"
+                return "Contact"
             }
         }
     }

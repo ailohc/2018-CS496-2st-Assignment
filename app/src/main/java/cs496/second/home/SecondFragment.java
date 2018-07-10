@@ -6,23 +6,41 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 import cs496.second.R;
 import cs496.second.photo.GalleryPickerAdapter;
@@ -40,6 +58,9 @@ public class SecondFragment extends Fragment {
     public GalleryPickerAdapter galleryPickerAdapter;
     String permissions= new String (Manifest.permission.READ_EXTERNAL_STORAGE);
     private int PERMISSION_REQUEST_CODE = 200;
+    public Button server_button;
+    public ImageView server_image;
+
 
     AlbumView albumView = new AlbumView();
 
@@ -55,8 +76,25 @@ public class SecondFragment extends Fragment {
         //final View rootview = inflater.inflate(R.layout.fragment_second, container, false);
         Log.d("TestTag","onCreateView start");
 
+
         View rootview = inflater.inflate(R.layout.fragment_second,null);
         mRecyclerView = (RecyclerView) rootview.findViewById(R.id.secondFragmentRecycler_view);
+
+        server_button = (Button) rootview.findViewById(R.id.server_button);
+
+        server_button.setOnClickListener( new Button.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Log.d("TestTag","button click ");
+                ImageGetTask imageGetTask = new ImageGetTask("key");
+                imageGetTask.execute();
+            }
+        });
+
+        server_image = (ImageView) rootview.findViewById(R.id.server_image);
+
+
+
         gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),2);  // 이거는 gallery를 보여주는 것과는 상관없음
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
@@ -152,7 +190,7 @@ public class SecondFragment extends Fragment {
     }
 
 
-    private class GetDataTask extends AsyncTask<Object, Integer, List<PhotosModel>> {
+    public class GetDataTask extends AsyncTask<Object, Integer, List<PhotosModel>> {
         private Boolean home;
         private Cursor cursor;
 
@@ -181,6 +219,85 @@ public class SecondFragment extends Fragment {
         }
 
     }
+
+    public class ImageGetTask extends AsyncTask<Void, Void, String> {
+        private String key;
+
+        public ImageGetTask(String key) {
+            this.key = key;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String jsonResponse = "";
+            String urlStr = "http://52.231.70.3:3000/get/image";
+            String jsonResponose = "";
+            JSONObject json = new JSONObject();
+            InputStream inputStream = null;
+            Bitmap bitmap;
+
+            try {
+                HttpURLConnection httpURLConnection = null;
+                URL url = new URL(urlStr);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("GET");
+                httpURLConnection.setDoInput(true);
+                //httpURLConnection.setRequestProperty("User-Agent",USER_AGENT);
+
+                int responseCode = httpURLConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    InputStream in = new BufferedInputStream(httpURLConnection.getInputStream());
+
+                    String data = readData(in);
+                    JSONObject jsonObject = new JSONObject(data);
+                    Log.d("TestTag", jsonObject.getString("id"));
+                    Log.d("TestTag", jsonObject.getString("image"));
+
+                    String imagebase64 = jsonObject.getString("image");
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                    byte[] imageBytes = baos.toByteArray();
+                    imageBytes = Base64.decode(imagebase64, Base64.DEFAULT);
+                    Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    server_image.setImageBitmap(decodedImage);
+
+
+                    //readStream(in);
+                    //Log.d("TestTag",data);
+                    httpURLConnection.disconnect();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "에러발생", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return "AsyncString";
+        }
+    }
+
+
+    public void readStream(InputStream in){
+        final String data = readData(in);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                // server_button.set
+            }
+        });
+    }
+
+    public String readData(InputStream is){
+        String data = "";
+        Scanner s = new Scanner(is);
+        while(s.hasNext()) data += s.nextLine() + "\n";
+        s.close();
+        return data;
+    }
+
+    Handler mHandler = new Handler();
 
 
 

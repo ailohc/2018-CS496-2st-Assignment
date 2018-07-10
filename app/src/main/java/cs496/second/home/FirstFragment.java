@@ -67,7 +67,7 @@ public class FirstFragment extends Fragment {
     private HashMap<String, Contact> hashed_contact_list;
     private ArrayList<Contact> contact_list;
     private ArrayList<String> name_list;
-    private FloatingActionButton fileBtn, fbBtn;
+    private FloatingActionButton fileBtn;
     private EditText contact_search;
     private ListView contact_listview;
     private ContactAdapter contact_adapter;
@@ -91,15 +91,17 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         fileBtn = rootView.findViewById(R.id.fileBtn);
-        //fbBtn = rootView.findViewById(R.id.fbBtn);
         contact_search = rootView.findViewById(R.id.contact_search);
         contact_listview = rootView.findViewById(R.id.contact_listview);
+        localContact = GetContact();
+        name_list = new ArrayList<>(localContact.keySet());
+        contact_adapter = new ContactAdapter(getActivity(), R.layout.contact_item, name_list);
+        contact_listview.setAdapter(contact_adapter);
 
         fileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                localContact = GetContact();
-                new SendToServer(localContact).execute(); //for server connection
+                SynchronizeServer();
             }
         });
 
@@ -152,32 +154,31 @@ public class FirstFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), Contact_Detail_Activity.class);
                 String name = adapterView.getAdapter().getItem(i).toString();
                 intent.putExtra("name", name);
-                intent.putExtra("phone_number", hashed_contact_list.get(name).phone);
-                intent.putExtra("email", hashed_contact_list.get(name).email);
+                intent.putExtra("phone", localContact.get(name).phone);
+                intent.putExtra("email", localContact.get(name).email);
                 startActivity(intent);
             }
         });
 
         contact_listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AlertDialog.Builder DeleteBtn = new AlertDialog.Builder(getActivity());
-                DeleteBtn.setMessage("Would you delete the item?").setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public boolean onItemLongClick(final AdapterView<?> adapterView, View view, final int i, long l) {
+                AlertDialog.Builder ShareBtn = new AlertDialog.Builder(getActivity());
+                ShareBtn.setMessage("Would you share the contact?").setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int j) {
                         String name = adapterView.getAdapter().getItem(i).toString();
-                        new FindKeybyName(name, hashed_contact_list.get(name), FindKeybyName.DELETE).execute();
+                        new PostTask(localContact.get(name));
                     };
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int j) {
                     }
                 });
-                DeleteBtn.show();
+                ShareBtn.show();
                 return true;
             }
         });
-        SynchronizeServer();
 
         return rootView;
     }
@@ -220,125 +221,22 @@ public class FirstFragment extends Fragment {
         return return_hashed;
     }
 
-    public void UpdateServer(String name, Contact contact) {
-        name = name.replace(' ', '+');
-        new FindKeybyName(name, contact, FindKeybyName.POST_OR_UPDATE).execute();
-    }
 
     public void SynchronizeServer() {
         new SynchronizeTask().execute();
     }
 
-    private class SendToServer extends AsyncTask {
-        private HashMap<String, Contact> UseHashMap;
-        public SendToServer(HashMap<String, Contact> UseHashMap) {
-            this.UseHashMap = UseHashMap;
-        }
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            String jsonResponse = "";
-            try {
-                HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.71.211:8080/api/connected/";
-                URI url = new URI(urlString);
-                HttpGet httpGet = new HttpGet(url);
-                HttpResponse response = httpClient.execute(httpGet);
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            boolean checkConnection = (Boolean) o;
-            if(checkConnection) {
-                COUNTER = 0;
-                MAX = UseHashMap.size();
-                for (Map.Entry<String, Contact> entry : UseHashMap.entrySet()) {
-                    UpdateServer(entry.getKey(), entry.getValue());
-                }
-            } else {
-                Toast.makeText(getActivity(), "Couldn't Connect to Server", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private class FindKeybyName extends AsyncTask {
-        public static final int POST_OR_UPDATE = 1;
-        public static final int DELETE = 2;
-        private String useName;
-        private Contact useContact;
-        private int next;
-        public FindKeybyName (String name, Contact contact, int next) {
-            this.useName = name;
-            this.useContact = contact;
-            this.next = next;
-        }
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            String jsonResponse = "";
-            try {
-                HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.71.211:8080/api/contacts/" + useName;
-                URI url = new URI(urlString);
-                HttpGet httpGet = new HttpGet(url);
-                HttpResponse response = httpClient.execute(httpGet);
-                jsonResponse = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
-                if(jsonResponse.contains("contact not found")) {
-                    return null;
-                } else {
-                    JSONArray arr = new JSONArray(jsonResponse);
-                    return arr.getJSONObject(0).getString("_id");
-                }
-            } catch (IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), "Couldn't Connect to Server", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            switch(next) {
-                case POST_OR_UPDATE:
-                    if(o == null) {
-                        new PostTask(useContact).execute();
-                    }
-                    else {
-                        new UpdateTask((String) o, useContact).execute();
-                    }
-                    break;
-                case DELETE:
-                    new DeleteTask((String) o).execute();
-                    break;
-            }
-        }
-    }
-
     private class PostTask extends AsyncTask {
-
         private Contact PostContact;
         public PostTask(Contact PostContact) {
             this.PostContact = PostContact;
         }
-
         @Override
         protected Object doInBackground(Object[] objects) {
+            Log.d("**************","responsed");
             String jsonResponse = "";
             try {
+                Log.d("**************","responsed");
                 HttpClient httpClient = new DefaultHttpClient();
                 String urlString = "http://52.231.71.211:8080/api/contacts/";
                 URI url = new URI(urlString);
@@ -372,8 +270,7 @@ public class FirstFragment extends Fragment {
         @Override
         protected void onPostExecute(Object o) {
             if((int) o == POST_SUCCESS) {
-                COUNTER++;
-                if(COUNTER == MAX) SynchronizeServer();
+                Toast.makeText(getActivity(), "success to post", Toast.LENGTH_SHORT).show();
             }
             else {
                 Toast.makeText(getActivity(), "error to post", Toast.LENGTH_SHORT).show();
@@ -381,123 +278,9 @@ public class FirstFragment extends Fragment {
         }
     }
 
-    private class UpdateTask extends AsyncTask {
-
-        private String key;
-        private Contact UpdateContact;
-
-        public UpdateTask(String key, Contact contact) {
-            this.key = key;
-            this.UpdateContact = contact;
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            String jsonResponse = "";
-            try {
-                HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.71.211:8080/api/contacts/" + key;
-                URI url = new URI(urlString);
-                HttpPut httpPut = new HttpPut(url);
-                List<NameValuePair> params = new ArrayList<>();
-                if(UpdateContact.name.equals(""))         params.add(new BasicNameValuePair("name"        , UpdateContact.name));
-                if(UpdateContact.phone.equals(""))        params.add(new BasicNameValuePair("phone"       , UpdateContact.phone));
-                if(UpdateContact.email.equals(""))        params.add(new BasicNameValuePair("email"       , UpdateContact.email));
-                if(UpdateContact.profileImage.equals("")) params.add(new BasicNameValuePair("profileImage", UpdateContact.profileImage));
-                UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params, HTTP.UTF_8);
-                httpPut.setEntity(ent);
-                HttpResponse response = httpClient.execute(httpPut);
-                jsonResponse = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
-                if(jsonResponse.contains("update successful")) {
-                    return UPDATE_SUCCESS;
-                } else if(jsonResponse.contains("database failure")) {
-                    return DATABASE_FAILURE;
-                } else if(jsonResponse.contains("contact not found")) {
-                    return CONTACT_NOT_FOUND;
-                } else if(jsonResponse.contains("failed to update")) {
-                    return FAILED_TO_UPDATE;
-                } else {
-                    return null;
-                }
-
-            } catch (IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), "Couldn't connect to Server", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            if(o == null) {
-                Toast.makeText(getActivity(), "error to update", Toast.LENGTH_SHORT).show();
-            } else {
-                int code = (int) o;
-                if(code != UPDATE_SUCCESS) {
-                    Toast.makeText(getActivity(), "error to update : " + code, Toast.LENGTH_SHORT).show();
-                } else {
-                    COUNTER++;
-                    if(COUNTER == MAX) SynchronizeServer();
-                }
-            }
-        }
-    }
-
-    private class DeleteTask extends AsyncTask {
-
-        private String id;
-
-        public DeleteTask(String id) {
-            this.id = id;
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            String jsonResponse = "";
-            try {
-                HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.71.211:8080/api/contacts/" + id;
-                URI url = new URI(urlString);
-                HttpDelete httpDelete = new HttpDelete(url);
-                HttpResponse response = httpClient.execute(httpDelete);
-                if(response.getEntity() == null) return SUCCESS;
-                else return DATABASE_FAILURE;
-            } catch (IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), "Couldn't Connect to Server", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            return EXCEPTION_OCCURED;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            int code = (int) o;
-            if(code != SUCCESS) {
-                Toast.makeText(getActivity(), "error to delete" + code, Toast.LENGTH_SHORT).show();
-            } else {
-                SynchronizeServer();
-            }
-        }
-    }
-
     private class SynchronizeTask extends AsyncTask {
         @Override
         protected Object doInBackground(Object[] objects) {
-            hashed_contact_list = new HashMap<String, Contact>();
             String jsonResponse = "";
             try {
                 HttpClient httpClient = new DefaultHttpClient();
@@ -508,7 +291,6 @@ public class FirstFragment extends Fragment {
                 jsonResponse = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
                 JSONArray arr = new JSONArray(jsonResponse);
                 int datalength = arr.length();
-                Log.d("**********************", String.valueOf(datalength));
                 for(int i = 0; i < arr.length(); i++) {
                     String obj_id           = arr.getJSONObject(i).getString("_id");
                     String obj_name         = arr.getJSONObject(i).getString("name");
@@ -516,7 +298,7 @@ public class FirstFragment extends Fragment {
                     String obj_email        = arr.getJSONObject(i).getString("email");
                     String obj_profileImage = arr.getJSONObject(i).getString("profileImage");
                     obj_name = obj_name.replace('+', ' ');
-                    hashed_contact_list.put(obj_name, new Contact(obj_name, obj_phone, obj_email, obj_profileImage));
+                    localContact.put(obj_name, new Contact(obj_name, obj_phone, obj_email, obj_profileImage));
                 }
                 return true;
             } catch (IOException e) {
@@ -531,12 +313,11 @@ public class FirstFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Object o) {
-            name_list = new ArrayList<>(hashed_contact_list.keySet());
+            name_list = new ArrayList<>(localContact.keySet());
             contact_adapter = new ContactAdapter(getActivity(), R.layout.contact_item, name_list);
             contact_listview.setAdapter(contact_adapter);
             if((Boolean) o) {
-                Toast.makeText(getActivity(), "Sucess", Toast.LENGTH_SHORT).show();
-                Log.d("***********************","Sucess to Update");
+                Toast.makeText(getActivity(), "Sucess to get data from Server", Toast.LENGTH_SHORT).show();
             }
             else Toast.makeText(getActivity(), "Couldn't Connect to Server", Toast.LENGTH_SHORT).show();
         }

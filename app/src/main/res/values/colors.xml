@@ -8,4 +8,6 @@
     <color name="black">#616161</color>
     <color name="splash">#4187dc</color>
     <color name="image_picked_color">#22bf1d</color>
+    <color name="bg_bubble_self">#62caa6</color>
+    <color name="bg_bubble_watbot">#ecf0f1</color>
 </resources>

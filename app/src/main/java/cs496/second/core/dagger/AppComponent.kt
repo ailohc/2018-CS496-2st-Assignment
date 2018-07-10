@@ -6,6 +6,7 @@ import dagger.Component
 import dagger.Module
 import dagger.Provides
 import cs496.second.chat.store.ChatModule
+import cs496.second.core.SplashActivity
 import cs496.second.home.Third_Sub_Activity
 import cs496.second.core.firebase.FirebaseModule
 import cs496.second.core.flux.App
@@ -32,6 +33,7 @@ interface AppComponent {
     (SessionModule::class)])
 
 interface DefaultAppComponent : AppComponent {
+    fun inject(target: SplashActivity)
     fun inject(target: Third_Sub_Activity)
     fun inject(target: FluxActivity)
     fun inject(target: LoginActivity)

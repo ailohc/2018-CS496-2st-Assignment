@@ -28,4 +28,6 @@
     <string name="error_cannot_be_empty">This cannot be empty.</string>
     <string name="title_activity_create_account">Create Account</string>
     <string name="error_invalid_password_not_valid">Please enter a password that is at least 6 characters long.</string>
+
+    <string name="what_s_on_your_mind">What\'s on your mind?</string>
 </resources>

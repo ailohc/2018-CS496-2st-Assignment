@@ -99,4 +99,10 @@ class ThirdActivity : FluxActivity() {
         super.onStop()
         dispatcher.dispatch(StopListeningChatMessagesAction())
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = HomeActivity.newIntent(this)
+        startActivity(intent)
+    }
 }

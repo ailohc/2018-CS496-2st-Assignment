@@ -50,6 +50,9 @@
             android:screenOrientation="portrait" />
         <activity android:name=".home.FourthActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".photo.ImagesGridActivity"/>
+        <activity android:name=".photo.ImageViewActivity"/>
+        <activity android:name=".home.Second_sub_Activity"/>
         <provider
             android:authorities="${applicationId}.provider"
             android:exported="false"

@@ -226,7 +226,7 @@ public class FirstFragment extends Fragment {
             Log.d("***************", "aaaaaaaaaaaaaaaa");
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.71.211:8080/api/contacts/";
+                String urlString = "http://52.231.70.3:3000/api/contacts/";
                 URI url = new URI(urlString);
                 HttpPost httpPost = new HttpPost(url);
                 List<NameValuePair> params = new ArrayList<>();
@@ -272,7 +272,7 @@ public class FirstFragment extends Fragment {
             String jsonResponse = "";
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                String urlString = "http://52.231.71.211:8080/api/contacts/";
+                String urlString = "http://52.231.70.3:3000/api/contacts/";
                 URI url = new URI(urlString);
                 HttpGet httpGet = new HttpGet(url);
                 HttpResponse response = httpClient.execute(httpGet);

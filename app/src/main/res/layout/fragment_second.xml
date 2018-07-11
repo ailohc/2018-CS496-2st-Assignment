@@ -3,13 +3,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="cs496.second.home.SecondFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/secondFragmentRecycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Second tab"
-        android:textSize="40sp"/>
+        android:layout_gravity="center"
+        android:background="#84fafac3"
+
+        />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab3_instagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="160dp"
+        android:layout_marginRight="15sp"
+        android:src="@drawable/firebase_icon"
+        android:visibility="invisible"
+        app:backgroundTint="#ffffff"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab2_instagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="90dp"
+        android:layout_marginRight="15sp"
+        android:src="@drawable/spytransparent2"
+        android:visibility="invisible"
+        app:backgroundTint="#ffffff"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab1_instagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15sp"
+        android:backgroundTint="#9500ff"
+        android:src="@drawable/firebase_icon" />
+
 
 </FrameLayout>

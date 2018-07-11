@@ -67,6 +67,7 @@ public class InstaAdapter extends RecyclerView.Adapter<InstaAdapter.CvViewHolder
 
         holder.cv_image.setImageBitmap(decodedImage);
         holder.cv_timeText.setText(timestamp);
+        holder.cv_titleText.setText("#"+position);
 
         View itemView = holder.itemView;
 
@@ -76,13 +77,18 @@ public class InstaAdapter extends RecyclerView.Adapter<InstaAdapter.CvViewHolder
     public class CvViewHolder extends RecyclerView.ViewHolder{
         View row;
         ImageView cv_image;
+
         TextView cv_timeText;
+        TextView cv_titleText;
+
 
         public CvViewHolder(View itemView){
             super(itemView);
             row = itemView;
             cv_image = (ImageView) row.findViewById(R.id.ivcv_image);
             cv_timeText = (TextView) row.findViewById(R.id.tv_writer);
+            cv_titleText = (TextView) row.findViewById(R.id.cv_titletext);
+
         }
     }
 

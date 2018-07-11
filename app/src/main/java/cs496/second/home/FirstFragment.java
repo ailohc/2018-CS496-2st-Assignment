@@ -68,6 +68,7 @@ public class FirstFragment extends Fragment {
     private ArrayList<Contact> contact_list;
     private ArrayList<String> name_list;
     private FloatingActionButton fileBtn;
+    private FloatingActionButton deleteBtn;
     private EditText contact_search;
     private ListView contact_listview;
     private ContactAdapter contact_adapter;
@@ -80,6 +81,7 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         fileBtn = rootView.findViewById(R.id.fileBtn);
+        deleteBtn = rootView.findViewById(R.id.deleteBtn);
         contact_search = rootView.findViewById(R.id.contact_search);
         contact_listview = rootView.findViewById(R.id.contact_listview);
         localContact = GetContact();
@@ -92,6 +94,11 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 SynchronizeServer();
             }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {new DeleteTask().execute(); }
         });
 
         contact_search.setRawInputType(InputType.TYPE_CLASS_TEXT);
@@ -310,4 +317,44 @@ public class FirstFragment extends Fragment {
             else Toast.makeText(getActivity(), "Couldn't Connect to Server", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private class DeleteTask extends AsyncTask {
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            String jsonResponse = "";
+            try {
+                HttpClient httpClient = new DefaultHttpClient();
+                String urlString = "http://52.231.70.3:3000/api/removeAll/";
+                URI url = new URI(urlString);
+                HttpGet httpGet = new HttpGet(url);
+                HttpResponse response = httpClient.execute(httpGet);
+                jsonResponse = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
+                JSONObject obj = new JSONObject(jsonResponse);
+                return obj.getInt("result");
+                } catch (IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "Couldn't Connect to Server", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+        @Override
+        protected void onPostExecute(Object o) {
+            if((int) o == POST_SUCCESS) {
+                Toast.makeText(getActivity(), "success to init database", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(getActivity(), "error to init database", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }

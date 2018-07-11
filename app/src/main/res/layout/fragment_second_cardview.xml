@@ -61,7 +61,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="CS496 스크럼"
-                            android:id="@+id/tv_title"
+                            android:id="@+id/cv_titletext"
                             android:textSize="16dp" />
 
                     </LinearLayout>

@@ -74,7 +74,7 @@ public class SecondFragment extends Fragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //final View rootview = inflater.inflate(R.layout.fragment_second, container, false);
-        Log.d("TestTag","onCreateView start");
+        Log.d("***************","onCreateView start");
 
 
         View rootview = inflater.inflate(R.layout.fragment_second,null);
@@ -102,10 +102,11 @@ public class SecondFragment extends Fragment {
 
         Log.d("TestTag","onCreateView after inflate");
 
-        if (galleryPickerAdapter == null) {
+        //if (galleryPickerAdapter == null) {
             galleryPickerAdapter = new GalleryPickerAdapter(getActivity().getApplicationContext());
+            Log.d("**********************", "ifff");
             mRecyclerView.setAdapter(galleryPickerAdapter);
-        }
+        //}
 
         Log.d("TestTag","onCreateView before return");
 

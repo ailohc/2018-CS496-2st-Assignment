@@ -8,23 +8,57 @@ tools:context="cs496.second.home.ThirdFragment">
 <!--todo -->
     <Button
         android:id="@+id/button1"
-        android:layout_width="387dp"
-        android:layout_height="276dp"
+        android:layout_width="191dp"
+        android:layout_height="570dp"
         android:background="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="250dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="42dp"
+        android:src="@drawable/chat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/button1"
+        app:layout_constraintTop_toBottomOf="@+id/button1"
+        app:layout_constraintVertical_bias="0.994" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="250dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="42dp"
+        android:src="@drawable/chatbot"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/button1"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintVertical_bias="0.994" />
+
     <Button
         android:id="@+id/button2"
-        android:layout_width="0dp"
-        android:layout_height="324dp"
-        android:layout_marginTop="133dp"
+        android:layout_width="186dp"
+        android:layout_height="592dp"
+        android:background="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1" />
+        app:layout_constraintTop_toBottomOf="@+id/button1"
+        app:layout_constraintVertical_bias="1.0" />
+
+
 
 
 </android.support.constraint.ConstraintLayout>

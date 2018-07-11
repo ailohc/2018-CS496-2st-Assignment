@@ -22,7 +22,7 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/bg_bubble_self"
         android:textIsSelectable="true"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:textColor="@android:color/white"/>
 
 

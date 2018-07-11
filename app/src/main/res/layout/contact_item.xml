@@ -5,10 +5,10 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_6"
+    android:layout_margin="@dimen/margin_4"
     android:elevation="@dimen/margin_2"
     android:orientation="horizontal"
-    android:padding="@dimen/margin_6">
+    android:padding="@dimen/margin_4">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,11 +17,10 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
-            android:layout_width="@dimen/small_profile_dimen"
-            android:layout_height="@dimen/small_profile_dimen"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/profile_pic"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -32,11 +31,10 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="290dp"
-            android:layout_marginStart="290dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_18"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import cs496.second.R
 import cs496.second.core.flux.FluxActivity
 import cs496.second.home.HomeActivity
 import cs496.second.home.ThirdActivity
@@ -24,6 +25,7 @@ class SplashActivity : FluxActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //setContentView(R.layout.activity_splash)
         val permissions = arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET)
         ActivityCompat.requestPermissions(this, permissions, MULTIPLE_PERMISSIONS)
         Thread.sleep(5000)

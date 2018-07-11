@@ -84,13 +84,12 @@ public class SecondFragment extends Fragment {
         fab_close = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_close);
 
         fab1_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab1_instagram);
-        fab2_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab2_instagram);
-        fab3_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab3_instagram);
 
-        fab1_instagram.setOnClickListener(mClickListener);
-        fab2_instagram.setOnClickListener(new FloatingActionButton.OnClickListener(){
+        //fab1_instagram.setOnClickListener(mClickListener);
+        fab1_instagram.setOnClickListener(new FloatingActionButton.OnClickListener(){
             @Override
             public void onClick(View view){
+                Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_LONG).show();
                 intent = new Intent(getActivity(), Second_sub_Activity.class);
                 startActivity(intent);
             }
@@ -113,42 +112,7 @@ public class SecondFragment extends Fragment {
         return rootview;
     }
 
-    FloatingActionButton.OnClickListener mClickListener = new View.OnClickListener() {
-        public void onClick(View view){
-            int id = view.getId();
-            switch (id){
-                case R.id.fab1_instagram:
-                    anim();
-                    Toast.makeText(getActivity(), "Floating Action Button", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.fab2_instagram:
-                    anim();
-                    Toast.makeText(getActivity(), "Button1", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.fab3_instagram:
-                    anim();
-                    Toast.makeText(getActivity(), "Button2", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
 
-
-    public void anim() {
-        if (isFabOpen) {
-            fab2_instagram.startAnimation(fab_close);
-            fab3_instagram.startAnimation(fab_close);
-            fab2_instagram.setClickable(false);
-            fab3_instagram.setClickable(false);
-            isFabOpen = false;
-        } else {
-            fab2_instagram.startAnimation(fab_open);
-            fab3_instagram.startAnimation(fab_open);
-            fab2_instagram.setClickable(true);
-            fab3_instagram.setClickable(true);
-            isFabOpen = true;
-        }
-    }
 
 
 

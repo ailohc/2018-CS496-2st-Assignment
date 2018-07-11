@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class InstaAdapter extends RecyclerView.Adapter<InstaAdapter.CvViewHolder
 
     public InstaAdapter(Context context){
         this.context = context;
-    //    this.photosPairArrayList = photosPairArrayList;
+        //    this.photosPairArrayList = photosPairArrayList;
 
         inflater = LayoutInflater.from(context);
 
@@ -57,7 +58,15 @@ public class InstaAdapter extends RecyclerView.Adapter<InstaAdapter.CvViewHolder
         imageBytes = Base64.decode(model.getBaseString(), Base64.DEFAULT);
         Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 
+        String timestamp = model.getTime();
+        timestamp = timestamp.substring(0,4) + "."
+                +timestamp.substring(4,6)+"."
+                +timestamp.substring(6,8)+"  "
+                +timestamp.substring(8,10)+":"
+                +timestamp.substring(10,12);
+
         holder.cv_image.setImageBitmap(decodedImage);
+        holder.cv_timeText.setText(timestamp);
 
         View itemView = holder.itemView;
 
@@ -67,11 +76,13 @@ public class InstaAdapter extends RecyclerView.Adapter<InstaAdapter.CvViewHolder
     public class CvViewHolder extends RecyclerView.ViewHolder{
         View row;
         ImageView cv_image;
+        TextView cv_timeText;
 
         public CvViewHolder(View itemView){
             super(itemView);
             row = itemView;
             cv_image = (ImageView) row.findViewById(R.id.ivcv_image);
+            cv_timeText = (TextView) row.findViewById(R.id.tv_writer);
         }
     }
 

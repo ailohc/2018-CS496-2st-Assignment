@@ -45,7 +45,9 @@
             android:layout_gravity="bottom"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Sent" />
+            android:text="Sent"
+            android:textColor="#FFFFFF"
+            android:background="@color/splash"/>
 
     </LinearLayout>
 </RelativeLayout>

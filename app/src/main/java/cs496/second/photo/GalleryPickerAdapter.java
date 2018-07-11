@@ -197,7 +197,7 @@ public class GalleryPickerAdapter extends RecyclerView.Adapter<GalleryPickerAdap
             String urlStr = "http://52.231.70.3:3000/ins/post";
 
             ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 10 , byteArrayOS);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100 , byteArrayOS);
 
             String encodedString = Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
             //Log.d("TestTag",encodedString);

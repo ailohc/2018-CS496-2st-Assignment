@@ -87,10 +87,11 @@ public class SecondFragment extends Fragment {
         fab2_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab2_instagram);
         fab3_instagram = (FloatingActionButton) rootview.findViewById(R.id.fab3_instagram);
 
-        fab1_instagram.setOnClickListener(mClickListener);
-        fab2_instagram.setOnClickListener(new FloatingActionButton.OnClickListener(){
+        //fab1_instagram.setOnClickListener(mClickListener);
+        fab1_instagram.setOnClickListener(new FloatingActionButton.OnClickListener(){
             @Override
             public void onClick(View view){
+                Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_LONG).show();
                 intent = new Intent(getActivity(), Second_sub_Activity.class);
                 startActivity(intent);
             }

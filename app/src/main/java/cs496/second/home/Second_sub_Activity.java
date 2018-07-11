@@ -173,7 +173,6 @@ public class Second_sub_Activity extends AppCompatActivity {
             Log.d("TestTag", "Get Image AsynchTask onPostExecuete start");
             instaAdapter.setData(photosPairList);
         }
-
     }
 
 

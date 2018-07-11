@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="#84fafac3"
+        android:background="#ffffff"
 
         />
 
@@ -49,8 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="15sp"
-        android:backgroundTint="#9500ff"
-        android:src="@drawable/firebase_icon" />
+        android:backgroundTint="@color/splash"
+        android:src="@drawable/instagram_hand_drawn_logo" />
 
 
 </FrameLayout>
